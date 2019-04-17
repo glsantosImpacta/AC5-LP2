@@ -7,19 +7,20 @@ class Disciplina:
     Abstração de uma disciplinai, possui os atributos Nome e carga Horária
     '''
     def __init__(self, nome: str, carga_horaria: int) -> None:
-        pass
+        self._nome = nome
+        self._carga_horaria = carga_horaria
 
     def get_nome(self) -> str:
         '''
         Acessor do atributo nome
         '''
-        pass
+        return self._nome
 
     def get_carga_horaria(self) -> int:
         '''
         Acessor do atributo cargar horaria
         '''
-        pass
+        return self._carga_horaria
 
 
 class Pessoa:
@@ -28,32 +29,36 @@ class Pessoa:
     que contém dados pertencentes a ambos.
     '''
     def __init__(self, nome: str, telefone: int, email: float) -> None:
-        pass
+        self._nome = nome
+        self._telefone = telefone
+        self._email = email
 
     def get_nome(self) -> str:
         '''
         Acessor do atributo Nome
         '''
-        pass
+        return self._nome
 
     def get_telefone(self) -> int:
         '''
         Acessor do atributo telefone
         '''
-        pass
+        return self._telefone
 
     def set_telefone(self, novo_telefone: int) -> None:
         '''
         Mutador do atributo telefone deve checar se é um número inteiro e,
         caso contrário devolver um TypeError
         '''
-        pass
+        if type(novo_telefone) != int:
+            raise TypeError('Telefone deve ser inteiro')
+        self._telefone = novo_telefone
 
     def get_email(self) -> str:
         '''
         Acessor do atributo email
         '''
-        pass
+        return self._email
 
     def set_email(self, novo_email) -> None:
         '''
@@ -61,32 +66,36 @@ class Pessoa:
         (se possuir o caractere '@') e caso contrário devolver
         um ValueError
         '''
-        pass
+        if '@' not in novo_email:
+            raise ValueError('Email inválido!')
+        self._email = novo_email
 
 
 class Aluno(Pessoa):
 
     def __init__(self, nome: str, telefone: int,
                  email: str, n_matricula: int) -> None:
-        pass
+        super().__init__(nome, telefone, email)
+        self._n_matricula = n_matricula
+        self._lst_disciplina = []
 
     def get_matricula(self) -> int:
         '''
         Acessor do atributo matricula
         '''
-        pass
+        return self._n_matricula
 
     def matricular(self, disciplina: Disciplina) -> None:
         '''
         Realiza matrícula do Aluno na disciplina
         '''
-        pass
+        self._lst_disciplina.append(disciplina)
 
     def lista_disciplinas(self) -> list:
         '''
         Devolve a lista de disciplinas em que o aluno esta matriculado
         '''
-        pass
+        return self._lst_disciplina
 
 
 class Professor(Pessoa):
@@ -94,7 +103,8 @@ class Professor(Pessoa):
     Entidade professor do Modelo
     '''
     def __init__(self, nome, telefone, email):
-        pass
+        super().__init__(nome, telefone, email)
+        self._lst_disciplina_ministrante = []
 
     def ministra(self, disciplina: Disciplina) -> None:
         '''
@@ -103,10 +113,16 @@ class Professor(Pessoa):
         Caso um professor tente atribuir mais de 200h devolve
         ValueError
         '''
-        pass
+        total = 0
+        for item in self.lista_disciplinas():
+            total += item._carga_horaria
+
+        if total+disciplina._carga_horaria > 200:
+            raise ValueError('Carga Horária inválida!')
+        self._lst_disciplina_ministrante.append(disciplina)
 
     def lista_disciplinas(self) -> list:
         '''
         lista as disciplinas ministradas pelo professor
         '''
-        pass
+        return self._lst_disciplina_ministrante
